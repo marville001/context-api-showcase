@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchPosts } from "../services/post";
+import { fetchPosts,createPost } from "../services/post";
 
 const DataFetching = () => {
     const [isLoading, setIsLoading] = useState(false);
@@ -22,6 +22,16 @@ const DataFetching = () => {
         loadMyPosts();
     }, []);
 
+    //handling post creation
+    const handleCreatePost = async()=>{
+        const result=  await createPost();
+        if (result.error){
+            setError(result.error)
+        }else{
+            setPosts((prevPosts) => [...prevPosts, result.posts]);   
+        }
+    };
+
     return (
         <div className="flex flex-col gap-4 p-2">
             {isLoading ? (
@@ -32,9 +42,13 @@ const DataFetching = () => {
                 posts.map((post) => (
                     <p className="p-4 rounded-md bg-gray-100" key={post.id}>
                         {post.title}
+                        <p>{post.body}</p>
                     </p>
                 ))
             )}
+            <button onClick={handleCreatePost} className="mt-4 bg-blue-500 text-white p-2 rounded">
+        Create Post
+      </button>
         </div>
     );
 };
