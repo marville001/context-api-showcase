@@ -12,3 +12,18 @@ export const fetchPosts = async () => {
 		};
 	}
 };
+
+export const createPost=async()=>{
+    try{
+      const res= await axios.post ("https://jsonplaceholder.typicode.com/posts?_limit=5",{
+       title:"hello world !" ,
+       body:"this is a new post"
+      })
+      return{posts:res.data}
+    } catch(error){
+        return{
+            error:error.message ?? "something went wrong"
+        }
+    }
+
+}
